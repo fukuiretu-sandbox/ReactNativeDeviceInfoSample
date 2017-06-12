@@ -1,0 +1,3 @@
+rootProject.name = 'ReactNativeDeviceInfoSample'
+
+include ':app'
