@@ -9,10 +9,35 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  Button,
 } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
+import * as Keychain from 'react-native-keychain';
+
+const username = 'zuck';
+const password = 'poniesRgr8';
 
 export default class ReactNativeDeviceInfoSample extends Component {
+  setKeychain() {
+    console.log('call setKeychain...')
+    Keychain
+      .setGenericPassword(username, password)
+      .then(function() {
+        console.log('Credentials saved successfully!');
+      });
+  }
+
+  getKeychain() {
+    Keychain
+      .getGenericPassword()
+      .then(function(credentials) {
+        console.log('Credentials successfully loaded for user ' + credentials.username);
+      }).catch(function(error) {
+        console.log('Keychain couldn\'t be accessed! Maybe no value set?', error);
+      });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -26,6 +51,19 @@ export default class ReactNativeDeviceInfoSample extends Component {
           Press Cmd+R to reload,{'\n'}
           Cmd+D or shake for dev menu
         </Text>
+        <Text>
+          Device Unique ID:{ DeviceInfo.getUniqueID() }
+        </Text>
+        <Button
+          onPress={this.setKeychain}
+          title="setKeychain"
+          color="#841584"
+        />
+        <Button
+          onPress={this.getKeychain}
+          title="getKeychain"
+          color="#841584"
+        />
       </View>
     );
   }
